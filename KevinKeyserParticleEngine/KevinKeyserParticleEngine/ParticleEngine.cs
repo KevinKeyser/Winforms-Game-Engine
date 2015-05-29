@@ -84,7 +84,13 @@ namespace KevinKeyserParticleEngine
             set { endColors = value; }
         }
 
-        Random randomGenerator;
+        private Random randomGenerator;
+
+        public Random RandomGenerator
+        {
+            get { return randomGenerator; }
+            set { randomGenerator = value; }
+        }
 
         public ParticleEngine(Bitmap texture, PointF location, int spawnRate, int spawnAmount)
         {
@@ -112,7 +118,7 @@ namespace KevinKeyserParticleEngine
                     particles.Add(new Particle(texture, location, randomGenerator.Next(10, 50), startColors[randomGenerator.Next(startColors.Length)], endColors[randomGenerator.Next(endColors.Length)], new PointF((float)randomGenerator.NextDouble() * (maxVelocity.X - minVelocity.X) + minVelocity.X, (float)randomGenerator.NextDouble() * (maxVelocity.Y - minVelocity.Y) + minVelocity.Y), randomGenerator.Next(50, 250)));
                 }
             }
-            for(int i = 0; i <particles.Count; i++)
+            for(int i = 0; i < particles.Count; i++)
             {
                 particles[i].Update(deltaTime);
                 if (particles[i].IsDead)

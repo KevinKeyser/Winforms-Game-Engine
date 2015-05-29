@@ -19,16 +19,26 @@ namespace KevinKeyserParticleEngine
         int totalTime = 0;
         int deltaTime = 0;
         int frameCounter = 0;
-        PointF velocity = new PointF(5, 5);
+        float rotation = 0;
+        PointF velocity;
+        Random randomGenerator;
+        Color[] colors;
 
         public GameForm()
         {
             InitializeComponent();
             spriteBatch = new SpriteBatch(ClientSize, Canvas);
 
-            particleEngine = new ParticleEngine(Properties.Resources.circle, new PointF(ClientSize.Width/2, ClientSize.Height/2), 1, 7);
-            particleEngine.StartColors = new Color[] { Color.Purple, Color.Cyan, Color.Pink };
-            particleEngine.EndColors = new Color[] { Color.Purple, Color.Cyan, Color.Pink, Color.Transparent };
+            randomGenerator = new Random();
+            colors = new Color[] { Color.Blue, Color.Purple, Color.Black };
+
+            velocity = new PointF(ClientSize.Width / 2, ClientSize.Height / 2);
+            particleEngine = new ParticleEngine(Properties.Resources.circle, new PointF(ClientSize.Width/2, ClientSize.Height/2), 100, 7);
+            particleEngine.RandomGenerator = randomGenerator;
+            particleEngine.MinVelocity = new PointF(-1, -1);
+            particleEngine.MaxVelocity = new PointF(1, 1);
+            particleEngine.StartColors = new Color[] { Color.Black, Color.Blue };
+            particleEngine.EndColors = new Color[] { Color.Blue };//, Color.Transparent };
             Text = string.Format("FPS: {0} | Particle Count: {1}", 60, particleEngine.Particles.Count);
         }
 
@@ -54,13 +64,24 @@ namespace KevinKeyserParticleEngine
             {
                 velocity.Y = -Math.Abs(velocity.Y);
             }
-            particleEngine.Update(deltaTime);
+            //particleEngine.Update(deltaTime);
 
+            rotation++;
+            spriteBatch.Clear(Color.Black);
 
-            spriteBatch.Clear(Color.White);
             spriteBatch.Begin();
+
+            Bitmap pic = Properties.Resources.KevinsShapes;
+            spriteBatch.Draw(pic, new PointF(100, ClientSize.Height / 2), new Rectangle(0, 0, 100, 100), Color.White, rotation, new PointF(50, 50), new PointF(1, 1), SpriteEffect.None);
+            spriteBatch.Draw(pic, new PointF(250, ClientSize.Height / 2), new Rectangle(100, 0, 100, 100), Color.White, rotation, new PointF(50, 50), new PointF(1, 1), SpriteEffect.None);
+            spriteBatch.Draw(pic, new PointF(400, ClientSize.Height / 2), new Rectangle(200, 0, 100, 100), Color.White, rotation, new PointF(50, 50), new PointF(1, 1), SpriteEffect.None);
+            spriteBatch.Draw(pic, new PointF(550, ClientSize.Height / 2), new Rectangle(300, 0, 100, 100), Color.White, rotation, new PointF(50, 50), new PointF(1, 1), SpriteEffect.None);
+            spriteBatch.Draw(pic, new PointF(700, ClientSize.Height / 2), new Rectangle(400, 0, 100, 100), Color.White, rotation, new PointF(50, 50), new PointF(1, 1), SpriteEffect.None);
+
+            spriteBatch.Draw(Properties.Resources.Trees, new PointF(0, 0), colors[randomGenerator.Next(colors.Length)]);
+
             particleEngine.Draw(spriteBatch);
-            spriteBatch.Draw(Properties.Resources.circle, new PointF(0, 0), Color.Blue);
+
             spriteBatch.End();
         }
 

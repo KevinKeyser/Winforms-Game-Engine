@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -10,6 +11,13 @@ using System.Windows.Forms;
 
 namespace KevinKeyserParticleEngine
 {
+    public enum SpriteEffect
+    {
+        None,
+        FlipHorizontally,
+        FlipVertically
+    }
+
     public class SpriteBatch
     {
         PictureBox image;
@@ -83,26 +91,58 @@ namespace KevinKeyserParticleEngine
         {
             if(ended == false)
             {
-                throw new Exception("Must End SpriteBatch Before Beginning");
+                throw new Exception("Must end SpriteBatch before beginning");
             }
             ended = false;
         }
 
         public void Clear(Color color)
         {
+            if(ended == false)
+            {
+                throw new Exception("SpriteBatch must be closed before clearing");
+            }
             graphics.FillRectangle(new SolidBrush(color), 0, 0, canvas.Width, canvas.Height);
         }
 
-        public void Draw(Bitmap image, PointF position, Color tint)
+        public void Draw(Bitmap texture, PointF position, Color tint)
         {
-            graphics.DrawImage(ColorTint(image, tint.R, tint.G, tint.B), position.X, position.Y);
+            this.Draw(texture, position, new Rectangle(0, 0, texture.Width, texture.Height), tint, 0, new PointF(0, 0), new PointF(1, 1), SpriteEffect.None);
+        }
+
+        public void Draw(Bitmap texture, PointF position, Rectangle sourceRectangle, Color tint, float rotation, PointF origin, PointF scale, SpriteEffect effect)
+        {
+            if (ended == true)
+            {
+                throw new Exception("SpriteBatch must begin before drawing");
+            }
+
+            texture = ColorTint(texture, tint.R, tint.G, tint.B);
+
+            Graphics gfx = Graphics.FromImage(canvas);
+            
+            //position
+            gfx.TranslateTransform(position.X, position.Y);
+            //rotate
+            gfx.RotateTransform(rotation);
+            //origin
+            gfx.TranslateTransform(-origin.X, -origin.Y);
+            //scale
+            gfx.ScaleTransform(scale.X, scale.Y);
+
+            gfx.SmoothingMode = SmoothingMode.HighQuality;
+            gfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+            gfx.DrawImage(texture, 0, 0, sourceRectangle, GraphicsUnit.Pixel);
+
+            gfx.Dispose();
         }
 
         public void End()
         {
             if(ended == true)
             {
-                throw new Exception("Must Begin SpriteBatch Before Ending");
+                throw new Exception("Must begin spriteBatch before ending");
             }
             ended = true;
             image.Image = canvas;
