@@ -43,8 +43,8 @@ namespace KevinKeyserParticleEngine
         private Bitmap ColorTint(Bitmap sourceBitmap, float redTint, float greenTint, float blueTint, float alphaTint)
         {
             BitmapData sourceData = sourceBitmap.LockBits(new Rectangle(0, 0,
-                                    sourceBitmap.Width, sourceBitmap.Height),
-                                    ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+                                               sourceBitmap.Width, sourceBitmap.Height),
+                                               ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
             byte[] pixelBuffer = new byte[sourceData.Stride * sourceData.Height];
 
@@ -62,18 +62,24 @@ namespace KevinKeyserParticleEngine
                 blue = pixelBuffer[k] + (255 - pixelBuffer[k]) * blueTint;
                 green = pixelBuffer[k + 1] + (255 - pixelBuffer[k + 1]) * greenTint;
                 red = pixelBuffer[k + 2] + (255 - pixelBuffer[k + 2]) * redTint;
-                alpha = pixelBuffer[k + 3] + (255 - pixelBuffer[k + 3]) * alphaTint;
+                red = pixelBuffer[k + 3] + (255 - pixelBuffer[k + 3]) * alphaTint;
 
-                blue.Clamp(0, 255);
-                red.Clamp(0, 255);
-                green.Clamp(0, 255);
-                alpha.Clamp(0, 255);
+                if (blue > 255)
+                { blue = 255; }
+
+                if (green > 255)
+                { green = 255; }
+
+                if (red > 255)
+                { red = 255; }
+
+                if (alpha > 255)
+                { alpha = 255; }
 
                 pixelBuffer[k] = (byte)blue;
                 pixelBuffer[k + 1] = (byte)green;
                 pixelBuffer[k + 2] = (byte)red;
-                pixelBuffer[k + 3] = (byte)alpha;
-
+                //pixelBuffer[k + 3] = (byte)alpha;
             }
 
             Bitmap resultBitmap = new Bitmap(sourceBitmap.Width, sourceBitmap.Height);
@@ -124,7 +130,7 @@ namespace KevinKeyserParticleEngine
                 throw new Exception("SpriteBatch must begin before drawing");
             }
 
-            texture = ColorTint(texture, tint.R, tint.G, tint.B, tint.A);
+            texture = ColorTint(texture, tint.R, tint.G, tint.B, 255);
 
             Graphics gfx = Graphics.FromImage(canvas);
             

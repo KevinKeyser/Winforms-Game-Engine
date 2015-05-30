@@ -107,6 +107,22 @@ namespace KevinKeyserParticleEngine
             set { randomGenerator = value; }
         }
 
+        private int minLife;
+
+        public int MinLife
+        {
+            get { return minLife; }
+            set { minLife = value; }
+        }
+
+        private int maxLife;
+
+        public int MaxLife
+        {
+            get { return maxLife; }
+            set { maxLife = value; }
+        }
+
         public ParticleEngine(PointF location, int spawnRate, int spawnAmount)
         {
             particles = new List<Particle>();
@@ -122,6 +138,8 @@ namespace KevinKeyserParticleEngine
             randomGenerator = new Random();
             startSize = 1;
             endSize = 40;
+            minLife = 10;
+            maxLife = 40;
         }
 
         public void Update(int deltaTime)
@@ -132,7 +150,7 @@ namespace KevinKeyserParticleEngine
                 elaspedTime = 0;
                 for (int i = 0; i < spawnAmount; i++)
                 {
-                    particles.Add(new Particle(shapes[randomGenerator.Next(shapes.Length)], position, startSize, endSize, startColors[randomGenerator.Next(startColors.Length)], endColors[randomGenerator.Next(endColors.Length)], new PointF((float)randomGenerator.NextDouble() * (maxVelocity.X - minVelocity.X) + minVelocity.X, (float)randomGenerator.NextDouble() * (maxVelocity.Y - minVelocity.Y) + minVelocity.Y), randomGenerator.Next(50, 250)));
+                    particles.Add(new Particle(shapes[randomGenerator.Next(shapes.Length)], position, startSize, endSize, startColors[randomGenerator.Next(startColors.Length)], endColors[randomGenerator.Next(endColors.Length)], new PointF((float)randomGenerator.NextDouble() * (maxVelocity.X - minVelocity.X) + minVelocity.X, (float)randomGenerator.NextDouble() * (maxVelocity.Y - minVelocity.Y) + minVelocity.Y), randomGenerator.Next(minLife, maxLife)));
                 }
             }
             for(int i = 0; i < particles.Count; i++)

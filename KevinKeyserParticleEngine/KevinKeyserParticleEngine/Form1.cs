@@ -30,15 +30,18 @@ namespace KevinKeyserParticleEngine
             spriteBatch = new SpriteBatch(ClientSize, Canvas);
 
             randomGenerator = new Random();
-            colors = new Color[] { Color.White };//, Color.Purple, Color.Black };
+            colors = new Color[] { Color.Purple };//, Color.Purple, Color.Black };
 
             velocity = new PointF(5,5);
-            particleEngine = new ParticleEngine(new PointF(ClientSize.Width/2, ClientSize.Height/2), 1, 1);
+            particleEngine = new ParticleEngine(new PointF(ClientSize.Width/2, ClientSize.Height/2), 1, 100);
             particleEngine.RandomGenerator = randomGenerator;
             particleEngine.MinVelocity = new PointF(-1, -1);
             particleEngine.MaxVelocity = new PointF(1, 1);
-            particleEngine.StartColors = new Color[] { Color.Green, Color.Blue };
+            particleEngine.StartSize = 1;
+            particleEngine.EndSize = 10;
+            particleEngine.StartColors = new Color[] { Color.LightBlue, Color.Turquoise, Color.AliceBlue, Color.CadetBlue, Color.BlueViolet, Color.CornflowerBlue };
             particleEngine.EndColors = new Color[] { Color.Transparent };
+            particleEngine.Shapes = new Shape[] { Shape.Circle };
             Text = string.Format("FPS: {0} | Particle Count: {1}", 60, particleEngine.Particles.Count);
         }
 
