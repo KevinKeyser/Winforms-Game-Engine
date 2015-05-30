@@ -17,12 +17,12 @@ namespace KevinKeyserParticleEngine
             set { particles = value; }
         }
 
-        private PointF location;
+        private PointF position;
 
-        public PointF Location
+        public PointF Position
         {
-            get { return location; }
-            set { location = value; }
+            get { return position; }
+            set { position = value; }
         }
 
         private int spawnRate;
@@ -59,15 +59,6 @@ namespace KevinKeyserParticleEngine
             set { maxVelocity = value; }
         }
 
-        private Bitmap texture;
-
-        public Bitmap Texture
-        {
-            get { return texture; }
-            set { texture = value; }
-        }
-        
-
         private Color[] startColors;
 
         public Color[] StartColors
@@ -84,6 +75,30 @@ namespace KevinKeyserParticleEngine
             set { endColors = value; }
         }
 
+        private Shape[] shapes;
+
+        public Shape[] Shapes
+        {
+            get { return shapes; }
+            set { shapes = value; }
+        }
+
+        private float startSize;
+
+        public float StartSize
+        {
+            get { return startSize; }
+            set { startSize = value; }
+        }
+
+        private float endSize;
+
+        public float EndSize
+        {
+            get { return endSize; }
+            set { endSize = value; }
+        }
+
         private Random randomGenerator;
 
         public Random RandomGenerator
@@ -92,11 +107,11 @@ namespace KevinKeyserParticleEngine
             set { randomGenerator = value; }
         }
 
-        public ParticleEngine(Bitmap texture, PointF location, int spawnRate, int spawnAmount)
+        public ParticleEngine(PointF location, int spawnRate, int spawnAmount)
         {
             particles = new List<Particle>();
-            this.texture = texture;
-            this.location = location;
+            shapes = new Shape[] { Shape.Circle };
+            this.position = location;
             elaspedTime = 0;
             this.spawnRate = spawnRate;
             this.spawnAmount = spawnAmount;
@@ -105,6 +120,8 @@ namespace KevinKeyserParticleEngine
             startColors = new Color[] { Color.White };
             endColors = new Color[] { Color.Transparent };
             randomGenerator = new Random();
+            startSize = 1;
+            endSize = 40;
         }
 
         public void Update(int deltaTime)
@@ -115,7 +132,7 @@ namespace KevinKeyserParticleEngine
                 elaspedTime = 0;
                 for (int i = 0; i < spawnAmount; i++)
                 {
-                    particles.Add(new Particle(texture, location, randomGenerator.Next(10, 50), startColors[randomGenerator.Next(startColors.Length)], endColors[randomGenerator.Next(endColors.Length)], new PointF((float)randomGenerator.NextDouble() * (maxVelocity.X - minVelocity.X) + minVelocity.X, (float)randomGenerator.NextDouble() * (maxVelocity.Y - minVelocity.Y) + minVelocity.Y), randomGenerator.Next(50, 250)));
+                    particles.Add(new Particle(shapes[randomGenerator.Next(shapes.Length)], position, startSize, endSize, startColors[randomGenerator.Next(startColors.Length)], endColors[randomGenerator.Next(endColors.Length)], new PointF((float)randomGenerator.NextDouble() * (maxVelocity.X - minVelocity.X) + minVelocity.X, (float)randomGenerator.NextDouble() * (maxVelocity.Y - minVelocity.Y) + minVelocity.Y), randomGenerator.Next(50, 250)));
                 }
             }
             for(int i = 0; i < particles.Count; i++)

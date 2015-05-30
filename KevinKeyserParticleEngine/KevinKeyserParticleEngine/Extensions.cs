@@ -19,19 +19,21 @@ namespace KevinKeyserParticleEngine
             return Color.FromArgb((int)(color1.A - a * amount), (int)(color1.R - r * amount), (int)(color1.G - g * amount), (int)(color1.B - b * amount));
         }
 
-        public static Color nextColor(this Random randomGenerator)
+        public static float Lerp(float number1, float number2, float amount)
         {
-            return nextColor(randomGenerator, true);
+            amount.Clamp(0, 1);
+            float difference = number1 - number2;
+            return number1 - difference * amount;
         }
 
-        public static Color nextColor(this Random randomGenerator, bool alpha)
+        public static Color NextColor(this Random randomGenerator)
+        {
+            return NextColor(randomGenerator, true);
+        }
+
+        public static Color NextColor(this Random randomGenerator, bool alpha)
         {
             return Color.FromArgb( alpha ? randomGenerator.Next(256) : 255, randomGenerator.Next(256), randomGenerator.Next(256), randomGenerator.Next(256));
-        }
-
-        public static void Draw(this Graphics graphics, Image image, PointF position)
-        {
-            graphics.DrawImage(image, position.X, position.Y);
         }
 
         public static float Clamp(this float amount, float min, float max)

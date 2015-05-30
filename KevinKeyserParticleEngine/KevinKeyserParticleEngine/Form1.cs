@@ -30,15 +30,15 @@ namespace KevinKeyserParticleEngine
             spriteBatch = new SpriteBatch(ClientSize, Canvas);
 
             randomGenerator = new Random();
-            colors = new Color[] { Color.Blue, Color.Purple, Color.Black };
+            colors = new Color[] { Color.White };//, Color.Purple, Color.Black };
 
-            velocity = new PointF(ClientSize.Width / 2, ClientSize.Height / 2);
-            particleEngine = new ParticleEngine(Properties.Resources.circle, new PointF(ClientSize.Width/2, ClientSize.Height/2), 100, 7);
+            velocity = new PointF(5,5);
+            particleEngine = new ParticleEngine(new PointF(ClientSize.Width/2, ClientSize.Height/2), 1, 1);
             particleEngine.RandomGenerator = randomGenerator;
             particleEngine.MinVelocity = new PointF(-1, -1);
             particleEngine.MaxVelocity = new PointF(1, 1);
-            particleEngine.StartColors = new Color[] { Color.Black, Color.Blue };
-            particleEngine.EndColors = new Color[] { Color.Blue };//, Color.Transparent };
+            particleEngine.StartColors = new Color[] { Color.Green, Color.Blue };
+            particleEngine.EndColors = new Color[] { Color.Transparent };
             Text = string.Format("FPS: {0} | Particle Count: {1}", 60, particleEngine.Particles.Count);
         }
 
@@ -47,24 +47,24 @@ namespace KevinKeyserParticleEngine
             frameCounter++;
             totalTime += gameTimer.Interval;
             deltaTime = gameTimer.Interval;
-            particleEngine.Location = new PointF(particleEngine.Location.X + velocity.X, particleEngine.Location.Y + velocity.Y);
-            if (particleEngine.Location.X < 0)
+            particleEngine.Position = new PointF(particleEngine.Position.X + velocity.X, particleEngine.Position.Y + velocity.Y);
+            if (particleEngine.Position.X < 0)
             {
                 velocity.X = Math.Abs(velocity.X);
             }
-            if (particleEngine.Location.Y < 0)
+            if (particleEngine.Position.Y < 0)
             {
                 velocity.Y = Math.Abs(velocity.Y);
             }
-            if (particleEngine.Location.X > ClientSize.Width)
+            if (particleEngine.Position.X > ClientSize.Width)
             {
                 velocity.X = -Math.Abs(velocity.X);
             }
-            if(particleEngine.Location.Y > ClientSize.Height)
+            if(particleEngine.Position.Y > ClientSize.Height)
             {
                 velocity.Y = -Math.Abs(velocity.Y);
             }
-            //particleEngine.Update(deltaTime);
+            particleEngine.Update(deltaTime);
 
             rotation++;
             spriteBatch.Clear(Color.Black);
@@ -78,7 +78,7 @@ namespace KevinKeyserParticleEngine
             spriteBatch.Draw(pic, new PointF(550, ClientSize.Height / 2), new Rectangle(300, 0, 100, 100), Color.White, rotation, new PointF(50, 50), new PointF(1, 1), SpriteEffect.None);
             spriteBatch.Draw(pic, new PointF(700, ClientSize.Height / 2), new Rectangle(400, 0, 100, 100), Color.White, rotation, new PointF(50, 50), new PointF(1, 1), SpriteEffect.None);
 
-            spriteBatch.Draw(Properties.Resources.Trees, new PointF(0, 0), colors[randomGenerator.Next(colors.Length)]);
+            spriteBatch.Draw(Properties.Resources.circle, new PointF(0, 0), colors[randomGenerator.Next(colors.Length)]);
 
             particleEngine.Draw(spriteBatch);
 

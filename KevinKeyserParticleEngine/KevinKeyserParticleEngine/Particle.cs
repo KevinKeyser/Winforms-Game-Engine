@@ -7,22 +7,30 @@ using System.Threading.Tasks;
 
 namespace KevinKeyserParticleEngine
 {
+    public enum Shape
+    {
+        Circle,
+        Square,
+        Star,
+        Triangle
+    }
+
     public class Particle
     {
-        private Bitmap texture;
+        private Shape shape;
 
-        public Bitmap Texture
+        public Shape Shape
         {
-            get { return texture; }
-            set { texture = value; }
+            get { return shape; }
+            set { shape = value; }
         }
 
-        private PointF location;
+        private PointF position;
 
-        public PointF Location
+        public PointF Position
         {
-            get { return location; }
-            set { location = value; }
+            get { return position; }
+            set { position = value; }
         }
 
         private float size;
@@ -83,11 +91,27 @@ namespace KevinKeyserParticleEngine
             set { isDead = value; }
         }
 
-        public Particle(Bitmap texture, PointF location, float size, Color startColor, Color endColor, PointF velocity, int life)
+        private float startSize;
+
+        public float StartSize
         {
-            this.texture = texture;
-            this.location = location;
-            this.size = size;
+            get { return startSize; }
+            set { startSize = value; }
+        }
+
+        private float endSize;
+
+        public float EndSize
+        {
+            get { return endSize; }
+            set { endSize = value; }
+        }
+        
+        public Particle(Shape shape, PointF location, float startSize, float endSize, Color startColor, Color endColor, PointF velocity, int life)
+        {
+            this.shape = shape;
+            this.position = location;
+            this.size = startSize;
             color = startColor;
             this.startColor = startColor;
             this.endColor = endColor;
@@ -95,6 +119,8 @@ namespace KevinKeyserParticleEngine
             this.life = life;
             elapsedLife = 0;
             isDead = false;
+            this.startSize = startSize;
+            this.endSize = endSize;
         }
 
         public void Update(int deltaTime)
@@ -104,15 +130,33 @@ namespace KevinKeyserParticleEngine
             {
                 isDead = true;
             }
-            location.X += velocity.X;
-            location.Y += velocity.Y;
-            float colorAmount = elapsedLife / (float)life;
-            color = Extensions.Lerp(startColor, endColor, colorAmount);
+            position.X += velocity.X;
+            position.Y += velocity.Y;
+            float amount = elapsedLife / (float)life;
+            color = Extensions.Lerp(startColor, endColor, amount);
+            size = Extensions.Lerp(startSize, endSize, amount);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, location, color);
+            switch (shape)
+	        {
+		        case Shape.Circle:
+                    spriteBatch.Graphics.FillEllipse(new SolidBrush(color), position.X, position.Y, size, size);
+                    break;
+                case Shape.Square:
+                    spriteBatch.Graphics.FillRectangle(new SolidBrush(color), position.X, position.Y, size, size);
+                    break;
+                case Shape.Star:
+                    System.Diagnostics.Debugger.Log(1, "Rendering", "Shape.Star is not supported yet.");
+                    break;
+                case Shape.Triangle:
+                    System.Diagnostics.Debugger.Log(1, "Rendering", "Shape.Triangle is not supported yet.");
+                    break;
+                default:
+                    System.Diagnostics.Debugger.Log(1, "Rendering", "Unknown Shape");
+                    break;
+	        }
         }
     }
 }
