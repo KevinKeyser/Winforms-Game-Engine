@@ -94,6 +94,39 @@ namespace KevinKeyserParticleEngine
             return resultBitmap;
         }
 
+        private Bitmap TintBitmap(Bitmap bitmap, Color color, Single intensity)
+        {
+            Bitmap b2 = new Bitmap(bitmap.Width, bitmap.Height);
+            ImageAttributes ia = new ImageAttributes();
+            float c = 255 - color.R;
+            float m = 255 - color.G;
+            float y = 255 - color.B;
+            float k = 255 - Math.Min(c, Math.Min(m, y));
+            float r = color.R / 255f;
+            float g = color.G / 255f;
+            float b = color.B / 255f;
+            float a = color.A / 255f;
+            ColorMatrix matrix = new ColorMatrix(
+                new Single[][]
+                {
+                    new Single[] {-1, 0, 0, 0, 0},
+                    new Single[] {0, -1, 0, 0, 0},
+                    new Single[] {0, 0, -1, 0, 0},
+                    new Single[] {0, 0, 0, a, 0},
+                    new Single[] {r, g, b, 1, 1}
+                }
+            );
+
+            //ia.SetOutputChannel(ColorChannelFlag.ColorChannelY, ColorAdjustType.Bitmap);
+            ia.SetColorMatrix(matrix);
+            Graphics graphics = Graphics.FromImage(b2);
+            graphics.DrawImage(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height), 0, 0, bitmap.Width, bitmap.Height, GraphicsUnit.Pixel, ia);
+            graphics.Dispose();
+            ia.Dispose();
+            return b2;
+            
+        }
+
         public void Update(Size ClientSize)
         {
             canvas = new Bitmap(ClientSize.Width, ClientSize.Height);
@@ -129,8 +162,8 @@ namespace KevinKeyserParticleEngine
             {
                 throw new Exception("SpriteBatch must begin before drawing");
             }
-
-            texture = ColorTint(texture, tint.R, tint.G, tint.B, 255);
+            texture = TintBitmap(texture, tint, 1f);
+            //texture = ColorTint(texture, tint.R, tint.G, tint.B, 255);
 
             Graphics gfx = Graphics.FromImage(canvas);
             
