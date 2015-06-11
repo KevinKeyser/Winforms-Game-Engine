@@ -23,6 +23,8 @@ namespace KevinKeyserParticleEngine
         PointF velocity;
         Random randomGenerator;
         Color[] colors;
+        List<Keys> keysDown = new List<Keys>();
+
 
         public GameForm()
         {
@@ -96,6 +98,26 @@ namespace KevinKeyserParticleEngine
         {
             Text = string.Format("FPS: {0} | Particle Count: {1}", frameCounter, particleEngine.Particles.Count);
             frameCounter = 0;
+        }
+
+        private void GameForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            keysDown.Remove(e.KeyCode);
+        }
+
+        private void GameForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            keysDown.Add(e.KeyCode);
+        }
+
+        public bool isKeyDown(Keys key)
+        {
+            return keysDown.Contains(key);
+        }
+
+        public bool isKeyUp(Keys key)
+        {
+            return !keysDown.Contains(key);
         }
     }
 }
