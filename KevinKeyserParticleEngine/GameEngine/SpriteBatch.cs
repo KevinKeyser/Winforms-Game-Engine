@@ -94,7 +94,7 @@ namespace GameEngine
             return resultBitmap;
         }
 
-        private Bitmap TintBitmap(Bitmap bitmap, Color color, Single intensity)
+        private Bitmap TintBitmap(Bitmap bitmap, Color color)
         {
             Bitmap b2 = new Bitmap(bitmap.Width, bitmap.Height);
             ImageAttributes ia = new ImageAttributes();
@@ -156,13 +156,18 @@ namespace GameEngine
             this.Draw(texture, position, new Rectangle(0, 0, texture.Width, texture.Height), tint, 0, new PointF(0, 0), new PointF(1, 1), SpriteEffect.None);
         }
 
+        public void Draw(Bitmap texture, RectangleF destinationRectangle, Color tint)
+        {
+            this.Draw(texture, new PointF(destinationRectangle.X, destinationRectangle.Y), new Rectangle(0, 0, texture.Width, texture.Height), tint, 0, new PointF(0, 0), new PointF(destinationRectangle.Width / texture.Width, destinationRectangle.Height/texture.Height), SpriteEffect.None);
+        }
+
         public void Draw(Bitmap texture, PointF position, Rectangle sourceRectangle, Color tint, float rotation, PointF origin, PointF scale, SpriteEffect effect)
         {
             if (ended == true)
             {
                 throw new Exception("SpriteBatch must begin before drawing");
             }
-            texture = TintBitmap(texture, tint, 1f);
+            texture = TintBitmap(texture, tint);
             //texture = ColorTint(texture, tint.R, tint.G, tint.B, 255);
 
             Graphics gfx = Graphics.FromImage(canvas);
@@ -171,10 +176,10 @@ namespace GameEngine
             gfx.TranslateTransform(position.X, position.Y);
             //rotate
             gfx.RotateTransform(rotation);
-            //origin
-            gfx.TranslateTransform(-origin.X, -origin.Y);
             //scale
             gfx.ScaleTransform(scale.X, scale.Y);
+            //origin
+            gfx.TranslateTransform(-origin.X, -origin.Y);
 
             gfx.SmoothingMode = SmoothingMode.HighQuality;
             gfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -182,6 +187,11 @@ namespace GameEngine
             gfx.DrawImage(texture, 0, 0, sourceRectangle, GraphicsUnit.Pixel);
 
             gfx.Dispose();
+        }
+
+        public void DrawString(Font font, string text, PointF position, Color color)
+        {
+            graphics.DrawString(text, font, new SolidBrush(color), position);
         }
 
         public void End()

@@ -47,13 +47,11 @@
             // 
             // gameTimer
             // 
-            this.gameTimer.Enabled = true;
             this.gameTimer.Interval = 1;
             this.gameTimer.Tick += new System.EventHandler(this.gameTimer_Tick);
             // 
             // frameTimer
             // 
-            this.frameTimer.Enabled = true;
             this.frameTimer.Interval = 1000;
             this.frameTimer.Tick += new System.EventHandler(this.frameTimer_Tick);
             // 

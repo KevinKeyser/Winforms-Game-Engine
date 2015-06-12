@@ -133,7 +133,7 @@ namespace GameEngine
             this.spawnAmount = spawnAmount;
             minVelocity = new PointF(-1, -1);
             maxVelocity = new PointF(1, 1);
-            startColors = new Color[] { Color.White };
+            startColors = new Color[] { Color.Blue };
             endColors = new Color[] { Color.Transparent };
             randomGenerator = new Random();
             startSize = 1;

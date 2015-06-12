@@ -11,7 +11,7 @@ namespace GameEngine
     {
         public static Color Lerp(Color color1, Color color2, float amount)
         {
-            amount.Clamp(0f, 1f);
+            amount = Clamp(amount, 0f, 1f);
             int a = color1.A - color2.A;
             int r = color1.R - color2.R;
             int g = color1.G - color2.G;
@@ -21,7 +21,7 @@ namespace GameEngine
 
         public static float Lerp(float number1, float number2, float amount)
         {
-            amount.Clamp(0f, 1f);
+            amount = Clamp(amount, 0f, 1f);
             float difference = number1 - number2;
             return number1 - difference * amount;
         }
@@ -36,7 +36,7 @@ namespace GameEngine
             return Color.FromArgb( alpha ? randomGenerator.Next(256) : 255, randomGenerator.Next(256), randomGenerator.Next(256), randomGenerator.Next(256));
         }
 
-        public static IComparable Clamp(this IComparable amount, IComparable min, IComparable max)
+        public static IComparable Clamp(IComparable amount, IComparable min, IComparable max)
         {
             if (amount.CompareTo(max) > 0)
             {
@@ -49,7 +49,7 @@ namespace GameEngine
             return amount;
         }
 
-        public static float Clamp(this float amount, float min, float max)
+        public static float Clamp(float amount, float min, float max)
         {
             if (amount > max)     
             {
@@ -62,7 +62,7 @@ namespace GameEngine
             return amount;
         }
 
-        public static int Clamp(this int amount, int min, int max)
+        public static int Clamp(int amount, int min, int max)
         {
             if (amount > max)     
             {

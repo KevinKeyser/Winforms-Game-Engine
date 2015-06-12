@@ -25,11 +25,37 @@ namespace GameEngine
         {
             InitializeComponent();
             spriteBatch = new SpriteBatch(ClientSize, Canvas);
+            frameTimer.Enabled = true;
+            gameTimer.Enabled = true;
         }
+
+        bool runOnce = false;
 
         private void gameTimer_Tick(object sender, EventArgs e)
         {
+            if (!runOnce)
+            {
+                foreach (var button in Controls.OfType<Button>())
+                {
+                    button.PreviewKeyDown += button_PreviewKeyDown;
+                    button.KeyDown += button_KeyDown;
+                }
+
+                runOnce = true;
+            }
+
             Update();
+            Draw();
+        }
+
+        void button_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            this.OnKeyDown(new KeyEventArgs(e.KeyData));            
+        }
+
+        void button_KeyDown(object sender, KeyEventArgs e)
+        {
+            this.OnKeyDown(e);
         }
 
         protected virtual void Update()
@@ -37,6 +63,11 @@ namespace GameEngine
             frameCounter++;
             totalGameTime += gameTimer.Interval;
             deltaGameTime = gameTimer.Interval;
+        }
+
+        protected virtual void Draw()
+        {
+
         }
 
         private void frameTimer_Tick(object sender, EventArgs e)
@@ -52,7 +83,10 @@ namespace GameEngine
 
         private void GameForm_KeyDown(object sender, KeyEventArgs e)
         {
-            keysDown.Add(e.KeyCode);
+            if (!keysDown.Contains(e.KeyCode))
+            {
+                keysDown.Add(e.KeyCode);
+            }
         }
 
         public bool IsKeyDown(Keys key)
