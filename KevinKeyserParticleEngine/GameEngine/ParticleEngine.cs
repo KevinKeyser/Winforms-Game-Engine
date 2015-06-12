@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KevinKeyserParticleEngine
+namespace GameEngine
 {
     public class ParticleEngine
     {
@@ -142,9 +142,9 @@ namespace KevinKeyserParticleEngine
             maxLife = 40;
         }
 
-        public void Update(int deltaTime)
+        public void Update(int deltaGameTime)
         {
-            elaspedTime += deltaTime;
+            elaspedTime += deltaGameTime;
             if (elaspedTime >= spawnRate)
             {
                 elaspedTime = 0;
@@ -155,7 +155,7 @@ namespace KevinKeyserParticleEngine
             }
             for(int i = 0; i < particles.Count; i++)
             {
-                particles[i].Update(deltaTime);
+                particles[i].Update(deltaGameTime);
                 if (particles[i].IsDead)
                 {
                     particles.RemoveAt(i);

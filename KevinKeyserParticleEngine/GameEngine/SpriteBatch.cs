@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace KevinKeyserParticleEngine
+namespace GameEngine
 {
     public enum SpriteEffect
     {
@@ -109,11 +109,11 @@ namespace KevinKeyserParticleEngine
             ColorMatrix matrix = new ColorMatrix(
                 new Single[][]
                 {
-                    new Single[] {-1, 0, 0, 0, 0},
-                    new Single[] {0, -1, 0, 0, 0},
-                    new Single[] {0, 0, -1, 0, 0},
+                    new Single[] {r, 0, 0, 0, 0},
+                    new Single[] {0, g, 0, 0, 0},
+                    new Single[] {0, 0, b, 0, 0},
                     new Single[] {0, 0, 0, a, 0},
-                    new Single[] {r, g, b, 1, 1}
+                    new Single[] {0, 0, 0, 0, 1}
                 }
             );
 

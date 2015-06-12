@@ -1,0 +1,6 @@
+C:\Users\Kevin Keyser\Documents\Winforms-Game-Engine\KevinKeyserParticleEngine\GameEngine\obj\Debug\GameEngine.GameForm.resources
+C:\Users\Kevin Keyser\Documents\Winforms-Game-Engine\KevinKeyserParticleEngine\GameEngine\obj\Debug\GameEngine.csproj.GenerateResource.Cache
+C:\Users\Kevin Keyser\Documents\Winforms-Game-Engine\KevinKeyserParticleEngine\GameEngine\bin\Debug\GameEngine.dll
+C:\Users\Kevin Keyser\Documents\Winforms-Game-Engine\KevinKeyserParticleEngine\GameEngine\bin\Debug\GameEngine.pdb
+C:\Users\Kevin Keyser\Documents\Winforms-Game-Engine\KevinKeyserParticleEngine\GameEngine\obj\Debug\GameEngine.dll
+C:\Users\Kevin Keyser\Documents\Winforms-Game-Engine\KevinKeyserParticleEngine\GameEngine\obj\Debug\GameEngine.pdb

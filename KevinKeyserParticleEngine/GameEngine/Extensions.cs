@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KevinKeyserParticleEngine
+namespace GameEngine
 {
     public static class Extensions
     {

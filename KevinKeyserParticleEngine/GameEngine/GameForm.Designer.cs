@@ -1,4 +1,4 @@
-﻿namespace KevinKeyserParticleEngine
+﻿namespace GameEngine
 {
     partial class GameForm
     {
@@ -41,7 +41,7 @@
             this.Canvas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Canvas.Location = new System.Drawing.Point(0, 0);
             this.Canvas.Name = "Canvas";
-            this.Canvas.Size = new System.Drawing.Size(928, 536);
+            this.Canvas.Size = new System.Drawing.Size(784, 442);
             this.Canvas.TabIndex = 0;
             this.Canvas.TabStop = false;
             // 
@@ -61,13 +61,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(928, 536);
+            this.ClientSize = new System.Drawing.Size(784, 442);
             this.Controls.Add(this.Canvas);
+            this.KeyPreview = true;
             this.Name = "GameForm";
-            this.Text = "Form1";
+            this.Text = "Game";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameForm_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.GameForm_KeyUp);
-            this.Resize += new System.EventHandler(this.Form1_Resize);
+            this.Resize += new System.EventHandler(this.GameForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.Canvas)).EndInit();
             this.ResumeLayout(false);
 
