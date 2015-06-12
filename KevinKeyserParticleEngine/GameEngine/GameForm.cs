@@ -101,7 +101,10 @@ namespace GameEngine
 
         private void GameForm_Resize(object sender, EventArgs e)
         {
-            spriteBatch.Update(ClientSize);
+            if (spriteBatch != null)
+            {
+                spriteBatch.Update(ClientSize);
+            }
         }
     }
 }
