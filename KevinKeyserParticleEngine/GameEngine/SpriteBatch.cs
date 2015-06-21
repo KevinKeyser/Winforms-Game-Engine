@@ -107,7 +107,7 @@ namespace GameEngine
             this.Draw(texture, new PointF(destinationRectangle.X, destinationRectangle.Y), new Rectangle(0, 0, texture.Width, texture.Height), tint, 0, new PointF(0, 0), new PointF(destinationRectangle.Width / texture.Width, destinationRectangle.Height/texture.Height), SpriteEffect.None);
         }
 
-        public void Draw(Bitmap texture, PointF position, Rectangle sourceRectangle, Color tint, float rotation, PointF origin, PointF scale, SpriteEffect effect)
+        public void Draw(Bitmap texture, PointF position, Rectangle? sourceRectangle, Color tint, float rotation, PointF origin, PointF scale, SpriteEffect effect)
         {
             if (ended == true)
             {
@@ -129,8 +129,12 @@ namespace GameEngine
 
             gfx.SmoothingMode = SmoothingMode.HighQuality;
             gfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            if(sourceRectangle.Value == null)
+            {
+                sourceRectangle = new Rectangle(0, 0, image.Width, image.Height);
+            }
 
-            gfx.DrawImage(texture, 0, 0, sourceRectangle, GraphicsUnit.Pixel);
+            gfx.DrawImage(texture, 0, 0, sourceRectangle.Value, GraphicsUnit.Pixel);
 
             gfx.Dispose();
         }
