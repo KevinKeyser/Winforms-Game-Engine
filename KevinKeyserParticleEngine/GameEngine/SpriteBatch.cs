@@ -110,7 +110,7 @@ namespace GameEngine
 
         public void Draw(Bitmap texture, PointF position, Rectangle? sourceRectangle, Color tint, float rotation, PointF origin, float scale, SpriteEffect effect)
         {
-            this.Draw(texture, position, sourceRectangle, tint, rotation, origin, scale, effect);
+            this.Draw(texture, position, sourceRectangle, tint, rotation, origin, new PointF(scale, scale), effect);
         }
 
         public void Draw(Bitmap texture, PointF position, Rectangle? sourceRectangle, Color tint, float rotation, PointF origin, PointF scale, SpriteEffect effect)
@@ -146,7 +146,7 @@ namespace GameEngine
 
             gfx.SmoothingMode = SmoothingMode.HighQuality;
             gfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            if(sourceRectangle.HasValue)
+            if(sourceRectangle.HasValue == false)
             {
                 sourceRectangle = new Rectangle(0, 0, image.Width, image.Height);
             }
