@@ -15,7 +15,8 @@ namespace GameEngine
     {
         None,
         FlipHorizontally,
-        FlipVertically
+        FlipVertically,
+        FlipBoth
     }
 
     public class SpriteBatch
@@ -107,14 +108,30 @@ namespace GameEngine
             this.Draw(texture, new PointF(destinationRectangle.X, destinationRectangle.Y), new Rectangle(0, 0, texture.Width, texture.Height), tint, 0, new PointF(0, 0), new PointF(destinationRectangle.Width / texture.Width, destinationRectangle.Height/texture.Height), SpriteEffect.None);
         }
 
+        public void Draw(Bitmap texture, PointF position, Rectangle? sourceRectangle, Color tint, float rotation, PointF origin, float scale, SpriteEffect effect)
+        {
+            this.Draw(texture, position, sourceRectangle, tint, rotation, origin, scale, effect);
+        }
+
         public void Draw(Bitmap texture, PointF position, Rectangle? sourceRectangle, Color tint, float rotation, PointF origin, PointF scale, SpriteEffect effect)
         {
             if (ended == true)
             {
                 throw new Exception("SpriteBatch must begin before drawing");
             }
+            switch (effect)
+            {
+                case SpriteEffect.FlipHorizontally:
+                    texture.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                    break;
+                case SpriteEffect.FlipVertically:
+                    texture.RotateFlip(RotateFlipType.RotateNoneFlipY);
+                    break;
+                case SpriteEffect.FlipBoth:
+                    texture.RotateFlip(RotateFlipType.RotateNoneFlipXY);
+                    break;
+            }
             texture = TintBitmap(texture, tint);
-            //texture = ColorTint(texture, tint.R, tint.G, tint.B, 255);
 
             Graphics gfx = Graphics.FromImage(canvas);
             
@@ -129,7 +146,7 @@ namespace GameEngine
 
             gfx.SmoothingMode = SmoothingMode.HighQuality;
             gfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            if(sourceRectangle.Value == null)
+            if(sourceRectangle.HasValue)
             {
                 sourceRectangle = new Rectangle(0, 0, image.Width, image.Height);
             }
