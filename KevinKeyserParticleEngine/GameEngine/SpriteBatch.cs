@@ -108,6 +108,11 @@ namespace GameEngine
             this.Draw(texture, new PointF(destinationRectangle.X, destinationRectangle.Y), new Rectangle(0, 0, texture.Width, texture.Height), tint, 0, new PointF(0, 0), new PointF(destinationRectangle.Width / texture.Width, destinationRectangle.Height/texture.Height), SpriteEffect.None);
         }
 
+        public void Draw(Bitmap texture, PointF position, Rectangle? sourceRectangle, Color tint)
+        {
+            this.Draw(texture, position, sourceRectangle, tint, 0, new PointF(0, 0), new PointF(1, 1), SpriteEffect.None);
+        }
+
         public void Draw(Bitmap texture, PointF position, Rectangle? sourceRectangle, Color tint, float rotation, PointF origin, float scale, SpriteEffect effect)
         {
             this.Draw(texture, position, sourceRectangle, tint, rotation, origin, new PointF(scale, scale), effect);
@@ -119,41 +124,48 @@ namespace GameEngine
             {
                 throw new Exception("SpriteBatch must begin before drawing");
             }
-            switch (effect)
+            if (scale.X != 0 || scale.Y != 0)
             {
-                case SpriteEffect.FlipHorizontally:
-                    texture.RotateFlip(RotateFlipType.RotateNoneFlipX);
-                    break;
-                case SpriteEffect.FlipVertically:
-                    texture.RotateFlip(RotateFlipType.RotateNoneFlipY);
-                    break;
-                case SpriteEffect.FlipBoth:
-                    texture.RotateFlip(RotateFlipType.RotateNoneFlipXY);
-                    break;
+                switch (effect)
+                {
+                    case SpriteEffect.FlipHorizontally:
+                        texture.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                        break;
+                    case SpriteEffect.FlipVertically:
+                        texture.RotateFlip(RotateFlipType.RotateNoneFlipY);
+                        break;
+                    case SpriteEffect.FlipBoth:
+                        texture.RotateFlip(RotateFlipType.RotateNoneFlipXY);
+                        break;
+                }
+                if(scale.X < 0 || scale.Y < 0)
+                {
+                    texture.RotateFlip(RotateFlipType.Rotate180FlipXY);
+                }
+                texture = TintBitmap(texture, tint);
+
+                Graphics gfx = Graphics.FromImage(canvas);
+
+                //position
+                gfx.TranslateTransform(position.X, position.Y);
+                //rotate
+                gfx.RotateTransform(rotation);
+                //scale
+                gfx.ScaleTransform(scale.X, scale.Y);
+                //origin
+                gfx.TranslateTransform(-origin.X, -origin.Y);
+
+                gfx.SmoothingMode = SmoothingMode.HighQuality;
+                gfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                if (!sourceRectangle.HasValue)
+                {
+                    sourceRectangle = new Rectangle(0, 0, image.Width, image.Height);
+                }
+
+                gfx.DrawImage(texture, 0, 0, sourceRectangle.Value, GraphicsUnit.Pixel);
+
+                gfx.Dispose();
             }
-            texture = TintBitmap(texture, tint);
-
-            Graphics gfx = Graphics.FromImage(canvas);
-            
-            //position
-            gfx.TranslateTransform(position.X, position.Y);
-            //rotate
-            gfx.RotateTransform(rotation);
-            //scale
-            gfx.ScaleTransform(scale.X, scale.Y);
-            //origin
-            gfx.TranslateTransform(-origin.X, -origin.Y);
-
-            gfx.SmoothingMode = SmoothingMode.HighQuality;
-            gfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            if(sourceRectangle.HasValue == false)
-            {
-                sourceRectangle = new Rectangle(0, 0, image.Width, image.Height);
-            }
-
-            gfx.DrawImage(texture, 0, 0, sourceRectangle.Value, GraphicsUnit.Pixel);
-
-            gfx.Dispose();
         }
 
         public void DrawString(Font font, string text, PointF position, Color color)

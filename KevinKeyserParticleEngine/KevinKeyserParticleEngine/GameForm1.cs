@@ -117,7 +117,7 @@ namespace KevinKeyserParticleEngine
 
             spriteBatch.Begin();
 
-            spriteBatch.Draw(Properties.Resources.Trees, new RectangleF(0,0,ClientSize.Width, ClientSize.Height), Color.Red);
+            spriteBatch.Draw(Properties.Resources.Trees, new RectangleF(0, 0, ClientSize.Width, ClientSize.Height), Color.Red);
 
             spriteBatch.Draw(Properties.Resources.KevinsShapes, new PointF(10, paddle1y), new Rectangle(0, 0, 100, 100), Color.Blue, 0, new PointF(50, 50), new PointF(.2f, 1), SpriteEffect.None);
             spriteBatch.Draw(Properties.Resources.KevinsShapes, new PointF(ClientSize.Width - 10, paddle2y), new Rectangle(0, 0, 100, 100), Color.Blue, 0, new PointF(50, 50), new PointF(.2f, 1), SpriteEffect.None);
